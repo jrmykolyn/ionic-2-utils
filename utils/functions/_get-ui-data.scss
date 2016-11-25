@@ -1,0 +1,16 @@
+/**
+ * Function allows for quick fetching of UI data/info from `$uiMap`.
+ *
+ * @param { String } `$element` - Name of the UI element.
+ * @param { String } `property` - Name of the specific property being queried
+ * @param { String } `$platform` - Name of platform being targeted, fallback to: global.
+ */
+@function getUIData( $element, $property, $platform: global ) {
+	// TODO:
+	// - Valdate existence of `$uiMap`
+	// - Validate arguments:
+		// - `$element`
+		// - `$propety`
+
+	@return map-get( map-get( map-get( $uiMap, $platform ), $element ), $property );
+}
