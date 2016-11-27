@@ -6,11 +6,27 @@
  * @param { String } `$platform` - Name of platform being targeted, fallback to: global.
  */
 @function getUIData( $element, $property, $platform: global ) {
-	// TODO:
-	// - Valdate existence of `$uiMap`
-	// - Validate arguments:
-		// - `$element`
-		// - `$propety`
+	@if ( variable-exists( uiMap ) != true ) {
+		@error "Ensure that `$uiMap` is defined before using the `getUIData()` function";
+	}
 
-	@return map-get( map-get( map-get( $uiMap, $platform ), $element ), $property );
+	$platformMap: map-get( $uiMap, $platform );
+
+	@if ( variable-exists( platformMap ) != true ) or ( $platformMap == null ) {
+		@error "Whoops, looks like you're trying to fetch data for a non-existent platform: '#{ $platform }'";
+	}
+
+	$elementMap: map-get( $platformMap, $element );
+
+	@if ( variable-exists( elementMap ) != true ) or ( $elementMap == null ) {
+		@error "Whoops, looks like you're trying to fetch data for a non-existent element: #{ $element }";
+	}
+
+	$data: map-get( $elementMap , $property );
+
+	@if ( $data == null ) {
+		@error "The property '#{ $property }' doesn't exist within the '#{ $element }' map."
+	} @else {
+		@return $data;
+	}
 }
